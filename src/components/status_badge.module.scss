@@ -1,0 +1,26 @@
+.status_badge {
+	padding: 0.5rem;
+	background-color: gray;
+	width: fit-content;
+	border-radius: 0.5rem;
+
+	display: flex;
+	flex-direction: row;
+	gap: 0.25rem;
+
+	&.status_connected {
+		background-color: #2f832f;
+		color: white;
+	}
+
+	&.status_not_connected_retry {
+		background-color: #aa9c34;
+		color: white;
+	}
+
+	&.status_not_connected,
+	&.status_no_ip {
+		background-color: #ff5e5e;
+		color: white;
+	}
+}

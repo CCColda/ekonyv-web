@@ -1,0 +1,26 @@
+.server_data {
+	background-color: gray;
+	width: fit-content;
+	padding: 1rem;
+	border-radius: 0.5rem;
+
+	.server_status {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 0.5em;
+
+		font-size: larger;
+	}
+
+	.server_ip {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 0.5em;
+
+		>span:nth-of-type(2) {
+			font-family: monospace;
+		}
+	}
+}

@@ -1,0 +1,13 @@
+:root {
+	--nav-foreground: #101010;
+	--nav-background: #e0e0e0;
+	--nav-hover: #c0c0c0;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--nav-background: #202020;
+		--nav-foreground: white;
+		--nav-hover: #707070;
+	}
+}
