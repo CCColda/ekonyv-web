@@ -1,8 +1,21 @@
 .main {
+	width: 100%;
+	height: 100%;
+}
+
+.dialog_backdrop {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	height: 100%;
+}
+
+.dialog {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
 }
 
 .content {

@@ -31,10 +31,8 @@ const SiteNavigation: FC<{}> = props => {
 		}, {
 			text: "Könyvek",
 			icon: <IconBxsBookHeart />,
-			disabled: status != "connected", //! @todo
-			action() {
-
-			},
+			disabled: false, //status != "connected", //! @todo
+			action: "books"
 		}, {
 			text: "Helyek",
 			icon: <IconBookshelf />,

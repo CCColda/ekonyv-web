@@ -1,13 +1,15 @@
 import { Address } from "@/slices/connection.slice";
+import { SessionState } from "@/slices/session.slice";
+import { parse } from "csv-string";
+import kvCsvParse from "./key_value_csv";
+import { KeyValuePacket, LoginPacketKeys, LogoutPacketKeys, RegisterPacketKeys, RenewPacketKeys } from "../types/packets";
 
-const makeURL = (address: Address, endpoint: string) =>
-	`http://${address.ip}:${address.port}${endpoint}`;
+export const makeURL = (address: Address, endpoint: string) =>
+	`${address.protocol}${address.ip}:${address.port}${endpoint}`;
 
-export async function checkAddress(address: Address) {
-	const res = await fetch(makeURL(address, "/ekonyv"), {
-		method: "GET",
-		mode: "cors"
-	});
+export const postRequest = (address: Address, endpoint: string) =>
+	fetch(makeURL(address, endpoint), { method: "POST", mode: "cors" })
 
-	return res.status == 200;
-}
+export const getRequest = (address: Address, endpoint: string) =>
+	fetch(makeURL(address, endpoint), { method: "GET", mode: "cors" })
+

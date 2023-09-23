@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ReducerAction } from "react";
 
 export type Address = {
+	protocol: "http://" | "https://",
 	ip: string,
 	port: number
 };
@@ -9,14 +9,21 @@ export type Address = {
 export type Connection =
 	"no_ip" | "not_connected_retry" | "not_connected" | "connected";
 
+export type ServerInfo = {
+	name: string,
+	version: string
+};
+
 export type ConnectionState = {
 	address: Address,
-	connection: Connection
+	connection: Connection,
+	serverInfo: ServerInfo | null
 };
 
 const initialState: ConnectionState = {
-	address: { ip: "", port: 0 },
-	connection: "no_ip"
+	address: { ip: "", port: 0, protocol: "http://" },
+	connection: "no_ip",
+	serverInfo: null
 };
 
 const connectionSlice = createSlice({
@@ -28,6 +35,9 @@ const connectionSlice = createSlice({
 		},
 		setConnection: (state, action: PayloadAction<Connection>) => {
 			state.connection = action.payload;
+		},
+		setServerInfo: (state, action: PayloadAction<ServerInfo>) => {
+			state.serverInfo = action.payload;
 		}
 	}
 });

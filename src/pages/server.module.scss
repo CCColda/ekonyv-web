@@ -1,3 +1,5 @@
+@import "../styles/input.scss";
+
 .server_data {
 	background-color: gray;
 	width: fit-content;
@@ -13,7 +15,9 @@
 		font-size: larger;
 	}
 
-	.server_ip {
+	.server_ip,
+	.server_name,
+	.server_version {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -23,4 +27,36 @@
 			font-family: monospace;
 		}
 	}
+}
+
+.set_server {
+	background-color: gray;
+	width: fit-content;
+	border-radius: 0.5rem;
+	padding: 0.5rem;
+
+	.title {
+		font-size: larger;
+	}
+
+	input {
+		@extend .disable_arrows;
+
+		background: none;
+		border: none;
+		outline: none;
+
+		border-bottom: 2px solid turquoise;
+		padding: 0.25rem;
+
+		&:nth-of-type(2) {
+			width: 4em;
+		}
+
+		&::placeholder {
+			color: #a0a0a0;
+		}
+	}
+
+
 }
