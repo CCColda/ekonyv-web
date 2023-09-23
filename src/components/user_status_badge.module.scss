@@ -1,0 +1,25 @@
+.user_status_badge {
+	padding: 0.5rem;
+	background-color: gray;
+	width: fit-content;
+	border-radius: 0.5rem;
+
+	display: flex;
+	flex-direction: row;
+	gap: 0.25rem;
+
+	&.status_logged_in {
+		background-color: #2f832f;
+		color: white;
+	}
+
+	&.status_session_expired {
+		background-color: #aa9c34;
+		color: white;
+	}
+
+	&.status_logged_out {
+		background-color: #ff5e5e;
+		color: white;
+	}
+}

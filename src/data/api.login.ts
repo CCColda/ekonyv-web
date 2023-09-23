@@ -6,7 +6,7 @@ import { SessionState } from "@/slices/session.slice";
 
 
 export async function login(address: Address, username: string, password: string): Promise<SessionState> {
-	const res = await postRequest(address, `/user/login?username=${username}&password=${password}`);
+	const res = await postRequest(address, `/api/user/login?username=${username}&password=${password}`);
 
 	if (res.status != 200)
 		return { token: null, refresh_token: null, expire: null };
@@ -17,7 +17,7 @@ export async function login(address: Address, username: string, password: string
 }
 
 export async function renew(address: Address, refresh: string): Promise<SessionState> {
-	const res = await postRequest(address, `/user/renew?refresh=${refresh}`);
+	const res = await postRequest(address, `/api/user/renew?refresh=${refresh}`);
 
 	if (res.status != 200)
 		return { token: null, refresh_token: null, expire: null };
@@ -28,7 +28,7 @@ export async function renew(address: Address, refresh: string): Promise<SessionS
 }
 
 export async function logout(address: Address, session: string): Promise<boolean> {
-	const res = await postRequest(address, `/user/logout?token=${session}`);
+	const res = await postRequest(address, `/api/user/logout?token=${session}`);
 
 	if (res.status != 200)
 		return false;
@@ -39,7 +39,7 @@ export async function logout(address: Address, session: string): Promise<boolean
 }
 
 export async function logoutEverywhere(address: Address, session: string): Promise<boolean> {
-	const res = await postRequest(address, `/user/logout_everywhere?token=${session}`);
+	const res = await postRequest(address, `/api/user/logout_everywhere?token=${session}`);
 
 	if (res.status != 200)
 		return false;
