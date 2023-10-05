@@ -1,4 +1,4 @@
-.register {
+.login {
 	border: 1px solid white;
 	border-radius: 1rem;
 	padding: 1rem;
@@ -46,42 +46,6 @@
 				&::placeholder {
 					color: #aaa;
 				}
-
-				&:disabled {
-					background-color: #222;
-					border-radius: 0.25rem;
-					border-color: darkgray;
-					border-bottom-style: dotted;
-					border-bottom-width: 1px;
-				}
-			}
-		}
-
-		.strength {
-			&.too_weak {
-				color: rgb(130, 55, 55);
-			}
-
-			&.weak {
-				color: rgb(163, 116, 65);
-			}
-
-			&.medium {
-				color: green;
-			}
-
-			&.strong {
-				color: rgb(78, 208, 78);
-			}
-		}
-
-		.repeat {
-			&:not(.matching) {
-				border-color: red;
-			}
-
-			&.matching {
-				border-color: green;
 			}
 		}
 

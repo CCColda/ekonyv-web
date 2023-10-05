@@ -1,26 +1,26 @@
-import { Address } from "@/slices/connection.slice";
-import { makeURL, postRequest } from "./api";
+import { postRequest } from "./api_request";
 import kvCsvParse from "./key_value_csv";
 import { KeyValuePacket, LoginPacketKeys, RenewPacketKeys, LogoutPacketKeys } from "../types/packets";
-import { SessionState } from "@/slices/session.slice";
+import { Session } from "@/types/session";
+import { Address } from "@/types/server";
 
 
-export async function login(address: Address, username: string, password: string): Promise<SessionState> {
+export async function login(address: Address, username: string, password: string): Promise<Session | null> {
 	const res = await postRequest(address, `/api/user/login?username=${username}&password=${password}`);
 
 	if (res.status != 200)
-		return { token: null, refresh_token: null, expire: null };
+		return null;
 
 	const csv = kvCsvParse(await res.text()) as KeyValuePacket<LoginPacketKeys>;
 
 	return { token: csv.token, refresh_token: csv.refresh, expire: Number(csv.expire) };
 }
 
-export async function renew(address: Address, refresh: string): Promise<SessionState> {
+export async function renew(address: Address, refresh: string): Promise<Session | null> {
 	const res = await postRequest(address, `/api/user/renew?refresh=${refresh}`);
 
 	if (res.status != 200)
-		return { token: null, refresh_token: null, expire: null };
+		return null;
 
 	const csv = kvCsvParse(await res.text()) as KeyValuePacket<RenewPacketKeys>;
 

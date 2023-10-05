@@ -1,0 +1,46 @@
+.ribbon {
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+
+	&.error {
+		border: 2px solid red;
+		background: #300;
+	}
+
+	&.warning {
+		border: 2px solid #ffff00;
+		background: #424218;
+	}
+
+	&.info {
+		border: 2px solid #057474;
+		background: #161e2b;
+	}
+
+	.message {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+		gap: 1rem;
+	}
+
+	.close {
+		padding: 0.75rem;
+		border-radius: 1rem;
+		outline: none;
+		background: none;
+		border: 1px solid white;
+
+		&:hover,
+		&:active {
+			background: white;
+			color: black;
+		}
+	}
+
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}

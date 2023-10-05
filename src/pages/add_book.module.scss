@@ -1,7 +1,7 @@
-.add_book_dialog {
-	position: absolute;
+.add_book {
+	width: 100%;
+	height: 100%;
 
-	background: darkgray;
 	border: 1px solid white;
 
 	border-radius: 1rem;
@@ -9,6 +9,9 @@
 
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
 
 	.title>* {
 		vertical-align: middle;
@@ -32,6 +35,17 @@
 
 				>input {
 					width: 100%;
+
+					background: none;
+					border: none;
+					outline: none;
+
+					border-bottom: 2px solid white;
+					padding: 0.5rem;
+
+					&::placeholder {
+						font-style: italic;
+					}
 				}
 			}
 		}
@@ -42,9 +56,14 @@
 			align-items: flex-start;
 			justify-content: center;
 
-			>label {
+			label {
 				user-select: none;
+				margin-left: 0.5em;
 			}
 		}
+	}
+
+	.add_button {
+		padding: 1rem;
 	}
 }

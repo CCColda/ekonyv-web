@@ -1,27 +1,17 @@
+import { Address, ServerInfo } from "@/types/server";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-
-export type Address = {
-	protocol: "http://" | "https://",
-	ip: string,
-	port: number
-};
 
 export type Connection =
 	"no_ip" | "not_connected_retry" | "not_connected" | "connected";
 
-export type ServerInfo = {
-	name: string,
-	version: string
-};
-
 export type ConnectionState = {
-	address: Address,
+	address: Address | null,
 	connection: Connection,
 	serverInfo: ServerInfo | null
 };
 
 const initialState: ConnectionState = {
-	address: { ip: "", port: 0, protocol: "http://" },
+	address: null,
 	connection: "no_ip",
 	serverInfo: null
 };

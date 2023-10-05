@@ -1,62 +1,87 @@
 @import "../styles/input.scss";
 
-.server_data {
-	background-color: gray;
-	width: fit-content;
+.server {
+	width: 100%;
+	height: 100%;
+	border: 2px solid white;
+	border-radius: 1rem;
 	padding: 1rem;
-	border-radius: 0.5rem;
+	gap: 1rem;
 
-	.server_status {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		gap: 0.5em;
-
-		font-size: larger;
-	}
-
-	.server_ip,
-	.server_name,
-	.server_version {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		gap: 0.5em;
-
-		>span:nth-of-type(2) {
-			font-family: monospace;
-		}
-	}
-}
-
-.set_server {
-	background-color: gray;
-	width: fit-content;
-	border-radius: 0.5rem;
-	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 
 	.title {
-		font-size: larger;
+		font-size: xx-large;
 	}
 
-	input {
-		@extend .disable_arrows;
+	.server_data {
+		width: fit-content;
+		padding: 1rem;
+		border-radius: 0.5rem;
 
-		background: none;
-		border: none;
-		outline: none;
+		.server_status {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 0.5em;
 
-		border-bottom: 2px solid turquoise;
-		padding: 0.25rem;
-
-		&:nth-of-type(2) {
-			width: 4em;
+			font-size: normal;
 		}
 
-		&::placeholder {
-			color: #a0a0a0;
+		.server_ip,
+		.server_name,
+		.server_version {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 0.5em;
+
+			>span:nth-of-type(2) {
+				font-family: monospace;
+			}
 		}
 	}
 
+	.set_server {
+		width: fit-content;
+		border-radius: 0.5rem;
+		padding: 0.5rem;
 
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: center;
+		gap: 0.5rem;
+
+		.subtitle {
+			font-size: x-large;
+			text-align: center;
+		}
+
+		input {
+			@extend .disable_arrows;
+
+			background: none;
+			border: none;
+			outline: none;
+
+			border-bottom: 2px solid white;
+			padding: 0.5rem;
+
+			&:nth-of-type(2) {
+				width: 4em;
+			}
+
+			&::placeholder {
+				color: #a0a0a0;
+			}
+		}
+
+		button {
+			padding: 0.5rem;
+		}
+	}
 }

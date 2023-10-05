@@ -1,17 +1,16 @@
 import SiteSkeleton from "@/components/site_skeleton";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { passwordStrength } from "check-password-strength";
 
 import styles from "./register.module.scss";
 import { register, requestCode } from "@/data/api.register";
 import { useDispatch, useSelector } from "react-redux";
 import { StoreState } from "@/store/store";
-import { Address } from "@/slices/connection.slice";
 import { login } from "@/data/api.login";
 import { useRouter } from "next/router";
 import sessionSlice from "@/slices/session.slice";
-import loginSlice from "@/slices/login.slice";
 import Link from "next/link";
+import { Address } from "@/types/server";
 
 type PasswordStrengthCode = 0 | 1 | 2 | 3;
 
@@ -38,7 +37,7 @@ export default function Register() {
 		3: "Erős"
 	};
 
-	const address = useSelector<StoreState, Address>(s => s.connection.address);
+	const address = useSelector<StoreState, Address | null>(s => s.connection.address);
 	const router = useRouter();
 	const dispatch = useDispatch();
 
@@ -47,38 +46,51 @@ export default function Register() {
 	const [passwordRepeat, setPasswordRepeat] = useState("");
 	const [code, setCode] = useState("");
 
+	const [requestDisabled, setRequestDisabled] = useState(false);
 	const [codeRequested, setCodeRequested] = useState(false);
 
 	const strength = useMemo(() => passwordStrength(password), [password]);
 
 	const matching = useMemo(() => password == passwordRepeat && password.length > 0, [password, passwordRepeat]);
 
-	const tryReqCode = async () => {
-		if (!checkUsernameAndPassword(username, password))
-			return;
+	useEffect(() => {
+		if (address == null)
+			router.push("server");
+	}, []);
 
-		if (!await requestCode(address))
+	const tryReqCode = async () => {
+		setRequestDisabled(true);
+
+		if (!checkUsernameAndPassword(username, password)) {
+			setRequestDisabled(false);
 			return;
+		}
+
+		if (!await requestCode(address!)) {
+			setRequestDisabled(false);
+			return;
+		}
 
 		setCodeRequested(true);
+		setRequestDisabled(false);
 	}
 
 	const tryRegister = async () => {
 		if (!checkCode(code))
 			return;
 
-		const [success, reason] = await register(address, username, password, code);
+		const [success, reason] = await register(address!, username, password, code);
 
 		if (!success)
 			return;
 
-		dispatch(loginSlice.actions.setCredentials({ username, password }));
+		dispatch(sessionSlice.actions.setCredentials({ username, password }));
 
-		const session = await login(address, username, password);
-		if (session.expire == null)
+		const session = await login(address!, username, password);
+		if (session == null)
 			return;
 
-		dispatch(sessionSlice.actions.setTokens(session));
+		dispatch(sessionSlice.actions.setSession(session));
 		router.push("user");
 	}
 
@@ -87,7 +99,7 @@ export default function Register() {
 			<div className={styles.title}>
 				<span> Regisztráció </span>
 			</div>
-			<div className={styles.new_user}>
+			<div className={styles.credentials}>
 				<table>
 					<tbody className={styles.inputs}>
 						<tr>
@@ -121,7 +133,7 @@ export default function Register() {
 					</tbody>
 				</table>
 				<div className={styles.actions}>
-					<button onClick={_ => { tryReqCode() }} disabled={codeRequested}>Kód kérése</button>
+					<button onClick={_ => { tryReqCode() }} disabled={codeRequested || requestDisabled}>Kód kérése</button>
 					<button onClick={_ => { tryRegister() }} disabled={!codeRequested}>Regisztráció</button>
 					<Link href="user">Van fiókod? Jelentkezz be</Link>
 				</div>

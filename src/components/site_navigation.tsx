@@ -7,21 +7,23 @@ import IconBxsBookHeart from "@/icons/bxs-book-heart";
 import IconBookshelf from "@/icons/bookshelf";
 import IconFileAdd from "@/icons/file-add";
 import StatusBadge from "./status_badge";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { StoreState } from "@/store/store";
 import { Connection } from "@/slices/connection.slice";
 import UserStatusBadge, { UserStatus } from "./user_status_badge";
 import { SessionState } from "@/slices/session.slice";
+import { Session } from "@/types/session";
+import uiSlice from "@/slices/ui.slice";
 
 const SESSION_UPDATE_INTERVAL = 15_000;
 
 const SiteNavigation: FC<{}> = props => {
-	const [collapsed, setCollapsed] = useState(false);
+	const collapsed = useSelector<StoreState, boolean>(s => s.ui.navigationExpanded);
 	const status = useSelector<StoreState, Connection>(s => s.connection.connection);
 
 	const [time, setTime] = useState(Date.now() / 1000);
 
-	const session = useSelector<StoreState, SessionState>(s => s.session);
+	const session = useSelector<StoreState, Session | null>(s => s.session.session);
 
 	useEffect(() => {
 		const interval_cb = () => {
@@ -32,7 +34,10 @@ const SiteNavigation: FC<{}> = props => {
 		return () => clearInterval(interval);
 	}, []);
 
-	const userStatus = useMemo<UserStatus>(() => session.expire == null ? "logged_out" : (session.expire < time ? "expired_session" : "logged_in"), [time, session]);
+	const userStatus = useMemo<UserStatus>(() => session == null ? "logged_out" : (session.expire < time ? "expired_session" : "logged_in"), [time, session]);
+
+	const dispatch = useDispatch();
+	const setCollapsed = (collapsed: boolean) => dispatch(uiSlice.actions.setNavigationExpanded(collapsed));
 
 	const navProps: NavigationProps = {
 		topLinks: [{
@@ -65,11 +70,9 @@ const SiteNavigation: FC<{}> = props => {
 		}],
 		bottomLinks: [{
 			text: "Könyv hozzáadása",
-			disabled: status != "connected", //! @todo
+			disabled: false,//status != "connected", //! @todo
 			icon: <IconFileAdd />,
-			action() {
-
-			},
+			action: "add_book",
 		}, {
 			text: "QR szkennelése",
 			disabled: status != "connected", //! @todo

@@ -1,7 +1,7 @@
-import { Address } from "@/slices/connection.slice";
-import { postRequest } from "./api";
+import { postRequest } from "./api_request";
 import kvCsvParse from "./key_value_csv";
 import { KeyValuePacket, RegisterPacketKeys } from "../types/packets";
+import { Address } from "@/types/server";
 
 export async function requestCode(address: Address) {
 	const res = await postRequest(address, `/api/user/req_code`);

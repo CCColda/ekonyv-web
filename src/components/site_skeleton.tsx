@@ -1,13 +1,13 @@
 import Head from "next/head";
-import { FC, MouseEventHandler } from "react";
+import { FC, useEffect, useState } from "react";
 
 import SiteNavigation from "./site_navigation";
 
 import styles from "./site_skeleton.module.scss";
-import AddBookDialog from "./add_book_dialog";
+import SiteRibbon from "./site_ribbon";
 import { useDispatch, useSelector } from "react-redux";
+import uiSlice, { RibbonState } from "@/slices/ui.slice";
 import { StoreState } from "@/store/store";
-import dialogSlice from "@/slices/dialog.slice";
 
 export type SiteSkeletonProps = {
 	title: string,
@@ -15,16 +15,18 @@ export type SiteSkeletonProps = {
 }
 
 const SiteSkeleton: FC<React.PropsWithChildren<SiteSkeletonProps>> = props => {
+	const ribbon = useSelector<StoreState, RibbonState | null>(s => s.ui.ribbon);
+	const [time, setTime] = useState(Date.now() / 1000);
+
 	const dispatch = useDispatch();
-	const dialogShown = useSelector<StoreState, boolean>(state => state.dialog.shown);
+	const closeRibbon = () => dispatch(uiSlice.actions.clearRibbon());
 
-	const onDialogClick: MouseEventHandler<HTMLDivElement> = ev => {
-		if (!dialogShown)
-			return;
+	useEffect(() => {
+		const intervalFn = () => setTime(Date.now() / 1000);
 
-		dispatch(dialogSlice.actions.setDialogShown(false));
-		ev.preventDefault();
-	}
+		const interval = setInterval(intervalFn, 1000);
+		return () => clearInterval(interval);
+	}, []);
 
 	return (
 		<>
@@ -35,18 +37,18 @@ const SiteSkeleton: FC<React.PropsWithChildren<SiteSkeletonProps>> = props => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<main className={styles.main}>
-				<div className={styles.dialog_backdrop}>
-					<SiteNavigation />
+				<SiteNavigation />
+				<div className={styles.body}>
 					<div className={styles.content}>
 						{props.children}
 					</div>
-				</div>
-				{
-					dialogShown &&
-					<div className={styles.dialog} onClick={onDialogClick}>
-						<AddBookDialog />
+					<div className={styles.ribbon}>
+						{
+							(ribbon && (ribbon.expire ? ribbon.expire > time : true)) &&
+							<SiteRibbon message={ribbon.message} type={ribbon.type} onClose={closeRibbon} />
+						}
 					</div>
-				}
+				</div>
 			</main>
 		</>
 	)

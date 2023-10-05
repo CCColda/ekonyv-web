@@ -1,25 +1,29 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { Session } from "@/types/session";
+import { UserCredentials } from "@/types/user";
 
 export type SessionState = {
-	token: string | null,
-	refresh_token: string | null,
-	expire: number | null
-};
+	session: Session | null
+	credentials: UserCredentials | null
+}
 
 const initialState: SessionState = {
-	token: null,
-	refresh_token: null,
-	expire: null
+	session: null,
+	credentials: null,
 };
 
 const sessionSlice = createSlice({
 	name: "session",
 	initialState,
 	reducers: {
-		setTokens: (state, action: PayloadAction<SessionState>) => {
-			state.token = action.payload.token;
-			state.refresh_token = action.payload.refresh_token;
-			state.expire = action.payload.expire;
+		setSession: (state, action: PayloadAction<Session>) => {
+			state.session = action.payload;
+		},
+		setCredentials: (state, action: PayloadAction<UserCredentials>) => {
+			state.credentials = action.payload;
+		},
+		clearCredentials: (state) => {
+			state.credentials = null;
 		}
 	}
 });

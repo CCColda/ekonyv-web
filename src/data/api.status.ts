@@ -1,5 +1,5 @@
-import { Address, ServerInfo } from "@/slices/connection.slice";
-import { getRequest, makeURL } from "./api";
+import { Address, ServerInfo } from "@/types/server";
+import { getRequest } from "./api_request";
 import kvCsvParse from "./key_value_csv";
 import { EKonyvPacketKeys, KeyValuePacket } from "@/types/packets";
 

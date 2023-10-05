@@ -1,0 +1,30 @@
+.books {
+	border: 1px solid white;
+	border-radius: 1rem;
+	padding: 1rem;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	gap: 2rem;
+
+	.title {
+		font-size: xx-large;
+	}
+
+	.data {
+		overflow-x: auto;
+		overflow-y: auto;
+		width: 100%;
+
+		table {
+			width: 100%;
+		}
+
+		td {
+			padding: 0.5rem;
+		}
+	}
+}
