@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import styles from "./login.module.scss";
-import { StoreState } from "@/store/store";
+import { StoreState } from "@/redux/store";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "@/data/api.login";
-import sessionSlice from "@/slices/session.slice";
+import sessionSlice from "@/redux/slices/session.slice";
 import { Address } from "@/types/server";
 import { UserCredentials } from "@/types/user";
 
@@ -25,13 +25,13 @@ export default function Login() {
 	const router = useRouter();
 	const dispatch = useDispatch();
 
-	useEffect(() => {
+	/* useEffect(() => {
 		if (address == null)
 			router.push("server");
 
 		if (user != null)
 			router.push("user");
-	}, []);
+	}, []); */
 
 	const tryLogin = async () => {
 		if (!checkUsernameAndPassword(username, password))

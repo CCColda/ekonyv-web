@@ -8,12 +8,13 @@ import IconBookshelf from "@/icons/bookshelf";
 import IconFileAdd from "@/icons/file-add";
 import StatusBadge from "./status_badge";
 import { useDispatch, useSelector } from "react-redux";
-import { StoreState } from "@/store/store";
-import { Connection } from "@/slices/connection.slice";
+import { StoreState } from "@/redux/store";
+import { Connection } from "@/redux/slices/connection.slice";
 import UserStatusBadge, { UserStatus } from "./user_status_badge";
-import { SessionState } from "@/slices/session.slice";
+import { SessionState } from "@/redux/slices/session.slice";
 import { Session } from "@/types/session";
-import uiSlice from "@/slices/ui.slice";
+import uiSlice from "@/redux/slices/ui.slice";
+import IconBxLayerPlus from "@/icons/bx-layer-plus";
 
 const SESSION_UPDATE_INTERVAL = 15_000;
 
@@ -53,32 +54,31 @@ const SiteNavigation: FC<{}> = props => {
 				<UserStatusBadge status={userStatus} />
 			</span>,
 			icon: <IconAccountBoxOutline />,
-			disabled: false,//status != "connected", //! @todo
+			disabled: status != "connected", //! @todo
 			action: "/user",
 		}, {
 			text: "Könyvek",
 			icon: <IconBxsBookHeart />,
-			disabled: false, //status != "connected", //! @todo
+			disabled: status != "connected" || userStatus != "logged_in", //! @todo
 			action: "books"
 		}, {
 			text: "Helyek",
 			icon: <IconBookshelf />,
-			disabled: status != "connected", //! @todo
-			action() {
-
-			},
+			disabled: status != "connected" || userStatus != "logged_in", //! @todo
+			action: "storages",
 		}],
-		bottomLinks: [{
-			text: "Könyv hozzáadása",
-			disabled: false,//status != "connected", //! @todo
-			icon: <IconFileAdd />,
-			action: "add_book",
-		}, {
-			text: "QR szkennelése",
-			disabled: status != "connected", //! @todo
-			action() { },
-			icon: <IconQrCode />
-		}],
+		bottomLinks: [
+			{
+				text: "Hely hozzáadása",
+				disabled: status != "connected" || userStatus != "logged_in", //! @todo
+				icon: <IconBxLayerPlus />,
+				action: "add_storage",
+			}, {
+				text: "Könyv hozzáadása",
+				disabled: status != "connected" || userStatus != "logged_in", //! @todo
+				icon: <IconFileAdd />,
+				action: "add_book",
+			}],
 		collapsed,
 		setCollapsed
 	}

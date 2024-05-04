@@ -10,3 +10,5 @@ export default interface Book {
 	user_id: number,
 	flags: number
 }
+
+export type PartialBook = Omit<Book, "id" | "created" | "user_id">;

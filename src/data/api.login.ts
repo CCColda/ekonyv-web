@@ -1,9 +1,8 @@
-import { postRequest } from "./api_request";
+import { getRequest, postRequest } from "./api_request";
 import kvCsvParse from "./key_value_csv";
-import { KeyValuePacket, LoginPacketKeys, RenewPacketKeys, LogoutPacketKeys } from "../types/packets";
+import { KeyValuePacket, LoginPacketKeys, RenewPacketKeys, LogoutPacketKeys, StatePacketKeys } from "../types/packets";
 import { Session } from "@/types/session";
 import { Address } from "@/types/server";
-
 
 export async function login(address: Address, username: string, password: string): Promise<Session | null> {
 	const res = await postRequest(address, `/api/user/login?username=${username}&password=${password}`);
@@ -45,6 +44,17 @@ export async function logoutEverywhere(address: Address, session: string): Promi
 		return false;
 
 	const csv = kvCsvParse(await res.text()) as KeyValuePacket<LogoutPacketKeys>;
+
+	return csv.state == "success";
+}
+
+export async function checkSession(address: Address, session: String): Promise<boolean> {
+	const res = await getRequest(address, `/api/user/session?token=${session}`);
+
+	if (res.status != 200)
+		return false;
+
+	const csv = kvCsvParse(await res.text()) as KeyValuePacket<StatePacketKeys>;
 
 	return csv.state == "success";
 }

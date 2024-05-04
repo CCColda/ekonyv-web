@@ -1,11 +1,11 @@
-import Book from "@/types/book";
+import Book, { PartialBook } from "@/types/book";
 import { getRequest, postRequest } from "./api_request";
 import kvCsvParse from "./key_value_csv";
 import { KeyValuePacket, StatePacketKeys } from "@/types/packets";
 import { Address } from "@/types/server";
 import { parse } from "csv-string";
 
-export async function addBook(address: Address, token: string, book: Book) {
+export async function addBook(address: Address, token: string, book: PartialBook) {
 	const book_data_query = Object.entries(book).map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join('&');
 
 	const res = await postRequest(address, `/api/book?token=${token}&${book_data_query}`);
@@ -24,17 +24,35 @@ export async function getAllBooks(address: Address, token: string): Promise<Book
 
 	const csv = parse(await res.text());
 
-	//! @todo
+	if (csv.length == 0)
+		return [];
+
+	if (csv[0].length != 10)
+		return [];
+
+	const header_indices: Record<keyof Book, number> = {
+		id: csv[0].indexOf("id"),
+		in: csv[0].indexOf("in"),
+		attributes: csv[0].indexOf("attributes"),
+		authors: csv[0].indexOf("authors"),
+		created: csv[0].indexOf("created"),
+		flags: csv[0].indexOf("flags"),
+		published: csv[0].indexOf("published"),
+		storage_id: csv[0].indexOf("storage_id"),
+		title: csv[0].indexOf("title"),
+		user_id: csv[0].indexOf("user_id")
+	};
+
 	return csv.slice(1).map(book_csv => ({
-		id: Number(book_csv[0]),
-		in: Number(book_csv[1]),
-		title: book_csv[2],
-		authors: book_csv[3],
-		published: book_csv[4],
-		attributes: book_csv[5],
-		created: Number(book_csv[6]),
-		storage_id: Number(book_csv[7]),
-		user_id: Number(book_csv[8]),
-		flags: Number(book_csv[9])
+		id: Number(book_csv[header_indices.id]),
+		in: Number(book_csv[header_indices.in]),
+		title: book_csv[header_indices.title],
+		authors: book_csv[header_indices.authors],
+		published: book_csv[header_indices.published],
+		attributes: book_csv[header_indices.attributes],
+		created: Number(book_csv[header_indices.created]),
+		storage_id: Number(book_csv[header_indices.storage_id]),
+		user_id: Number(book_csv[header_indices.user_id]),
+		flags: Number(book_csv[header_indices.flags])
 	}));
 }

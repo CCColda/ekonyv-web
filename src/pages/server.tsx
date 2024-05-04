@@ -2,13 +2,13 @@ import SiteSkeleton from "@/components/site_skeleton";
 
 import styles from "./server.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { StoreState } from "@/store/store";
+import { StoreState } from "@/redux/store";
 import StatusBadge from "@/components/status_badge";
 import { useMemo, useState } from "react";
 import { checkAddress } from "@/data/api.status";
-import connectionSlice, { Connection } from "@/slices/connection.slice";
+import connectionSlice, { Connection } from "@/redux/slices/connection.slice";
 import { Address, ServerInfo } from "@/types/server";
-import uiSlice from "@/slices/ui.slice";
+import uiSlice from "@/redux/slices/ui.slice";
 
 
 export default function Server() {

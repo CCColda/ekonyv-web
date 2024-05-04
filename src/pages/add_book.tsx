@@ -1,16 +1,17 @@
 import IconFileAdd from "@/icons/file-add";
 import styles from "./add_book.module.scss";
-import { ChangeEventHandler, Dispatch, MouseEventHandler, SetStateAction, useEffect, useState } from "react";
-import Book from "@/types/book";
+import { ChangeEventHandler, Dispatch, MouseEventHandler, SetStateAction, useEffect, useMemo, useState } from "react";
+import Book, { PartialBook } from "@/types/book";
 import { addBook } from "@/data/api.book";
 import { useDispatch, useSelector } from "react-redux";
-import { StoreState } from "@/store/store";
+import { StoreState } from "@/redux/store";
 import { renew } from "@/data/api.login";
-import sessionSlice from "@/slices/session.slice";
+import sessionSlice from "@/redux/slices/session.slice";
 import { Address } from "@/types/server";
 import { Session } from "@/types/session";
 import SiteSkeleton from "@/components/site_skeleton";
 import { useRouter } from "next/router";
+import Storage from "@/types/storage";
 
 enum Flag {
 	PUBLICLY_WRITABLE = 0b00000001,
@@ -82,17 +83,26 @@ export default function AddBook() {
 			router.push("login"); */
 	}, []);
 
-	const StorageInputRow: React.FC<{}> = _ =>
-		<tr>
+	const StorageInputRow: React.FC<{}> = _ => {
+		const registeredStorages = useSelector<StoreState, Storage[]>(state => state.storages);
+		const availableStorages = useMemo<Storage[]>(() => ([{ id: 0, name: "Kiválasztás...", user_id: 0 }, ...registeredStorages]), [registeredStorages]);
+
+		return <tr>
 			<td>Hely</td>
 			<td>
 				<span className={styles.storage}>
-					<select defaultValue="default" onChange={ev => setStorage(ev.target.value)}>
-						<option value="default">Kiválasztás...</option>
+					<select value={`${storage}`} onChange={ev => setStorage(ev.target.value)}>
+						{/* <option value="0">Kiválasztás...</option> */}
+						{
+							availableStorages.map(storage =>
+								<option value={`${storage.id}`} key={storage.id}>{storage.name}</option>
+							)
+						}
 					</select>
 				</span>
 			</td>
 		</tr>;
+	}
 
 	const FlagCheckbox: React.FC<{ description: string, flag: number }> =
 		({ description, flag }) =>
@@ -132,17 +142,14 @@ export default function AddBook() {
 			dispatch(sessionSlice.actions.setSession(currentSession));
 		}
 
-		const book: Book = {
+		const book: PartialBook = {
 			title,
 			in: Number(IN),
 			authors,
 			published,
 			attributes,
 			flags,
-			created: Date.now(),
-			id: 0,
-			storage_id: 0,
-			user_id: 0
+			storage_id: Number(storage),
 		};
 
 		await addBook(address, currentSession.token!, book);

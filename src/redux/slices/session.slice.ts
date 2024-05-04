@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Session } from "@/types/session";
 import { UserCredentials } from "@/types/user";
+import { initThunk } from "./app.slice";
 
 export type SessionState = {
 	session: Session | null
@@ -25,6 +26,11 @@ const sessionSlice = createSlice({
 		clearCredentials: (state) => {
 			state.credentials = null;
 		}
+	},
+	extraReducers: builder => {
+		builder.addCase(initThunk.fulfilled, (state, action) => {
+			state.session = action.payload.session;
+		});
 	}
 });
 

@@ -3,7 +3,7 @@ import SiteSkeleton from "@/components/site_skeleton";
 import styles from "./user.module.scss";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { StoreState } from "@/store/store";
+import { StoreState } from "@/redux/store";
 import { useEffect } from "react";
 import { Session } from "@/types/session";
 
@@ -14,7 +14,7 @@ export default function User() {
 	useEffect(() => {
 		if (session == null)
 			router.push("login");
-	}, []);
+	}, [session]);
 
 	return <SiteSkeleton title="EKönyv - fiók" description="">
 		<div className={styles.set_server}>

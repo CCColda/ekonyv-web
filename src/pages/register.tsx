@@ -5,10 +5,10 @@ import { passwordStrength } from "check-password-strength";
 import styles from "./register.module.scss";
 import { register, requestCode } from "@/data/api.register";
 import { useDispatch, useSelector } from "react-redux";
-import { StoreState } from "@/store/store";
+import { StoreState } from "@/redux/store";
 import { login } from "@/data/api.login";
 import { useRouter } from "next/router";
-import sessionSlice from "@/slices/session.slice";
+import sessionSlice from "@/redux/slices/session.slice";
 import Link from "next/link";
 import { Address } from "@/types/server";
 

@@ -1,10 +1,10 @@
 import { Address, ServerInfo } from "@/types/server";
-import { getRequest } from "./api_request";
+import { getRequest, getRequestTimeout } from "./api_request";
 import kvCsvParse from "./key_value_csv";
 import { EKonyvPacketKeys, KeyValuePacket } from "@/types/packets";
 
 export async function checkAddress(address: Address): Promise<ServerInfo | null> {
-	const res = await getRequest(address, "/ekonyv");
+	const res = await getRequestTimeout(address, "/ekonyv", 5_000);
 	if (res.status != 200)
 		return null;
 

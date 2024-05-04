@@ -1,7 +1,7 @@
 import IconCrossCircled from "@/icons/cross-circled";
 import IconExclamationTriangleFill from "@/icons/exclamation-triangle-fill";
 import IconTickCircle from "@/icons/tick-circle";
-import { Connection } from "@/slices/connection.slice";
+import { Connection } from "@/redux/slices/connection.slice";
 import { FC } from "react";
 
 import styles from "./status_badge.module.scss";

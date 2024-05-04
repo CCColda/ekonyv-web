@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { StoreState } from '../store/store'
+import { StoreState } from '../redux/store'
 import SiteSkeleton from '@/components/site_skeleton'
 
 import styles from '@/styles/Home.module.css'
