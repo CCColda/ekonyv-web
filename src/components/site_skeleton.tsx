@@ -10,7 +10,6 @@ import uiSlice, { RibbonState } from "@/redux/slices/ui.slice";
 import { StoreState } from "@/redux/store";
 import { checkConnection } from "@/redux/slices/connection.slice";
 import { Address } from "@/types/server";
-import AppState from "./app_state";
 
 export type SiteSkeletonProps = {
 	title: string,
@@ -20,9 +19,12 @@ export type SiteSkeletonProps = {
 const SiteSkeleton: FC<React.PropsWithChildren<SiteSkeletonProps>> = props => {
 	const ribbon = useSelector<StoreState, RibbonState | null>(s => s.ui.ribbon);
 	const address = useSelector<StoreState, Address | null>(s => s.connection.address);
+	const time = useSelector<StoreState, number>(s => s.app.time_s);
 
 	const dispatch = useDispatch();
 	const closeRibbon = () => dispatch(uiSlice.actions.clearRibbon());
+
+
 
 	return (
 		<>
