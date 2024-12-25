@@ -17,8 +17,9 @@ export async function getRequestTimeout(address: Address, endpoint: string, time
 	const res = await fetch(makeURL(address, endpoint), {
 		signal: controller.signal,
 		method: "GET",
-		mode: "cors"
-	});
+		mode: "cors",
+		targetAddressSpace: "private"
+	} as any);
 
 	clearTimeout(timeout_id);
 
