@@ -4,10 +4,10 @@ export const makeURL = (address: Address, endpoint: string) =>
 	`${address.protocol}${address.ip}:${address.port}${endpoint}`;
 
 export const postRequest = (address: Address, endpoint: string) =>
-	fetch(makeURL(address, endpoint), { method: "POST", mode: "cors" })
+	fetch(makeURL(address, endpoint), { method: "POST", mode: "cors", targetAddressSpace: "private" } as any)
 
 export const getRequest = (address: Address, endpoint: string) =>
-	fetch(makeURL(address, endpoint), { method: "GET", mode: "cors" })
+	fetch(makeURL(address, endpoint), { method: "GET", mode: "cors", targetAddressSpace: "private" } as any)
 
 export async function getRequestTimeout(address: Address, endpoint: string, timeout: number) {
 	const controller = new AbortController();
