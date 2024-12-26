@@ -4,7 +4,7 @@ import kvCsvParse from "./key_value_csv";
 import { EKonyvPacketKeys, KeyValuePacket } from "@/types/packets";
 
 export async function checkAddress(address: Address): Promise<ServerInfo | null> {
-	const res = await getRequestTimeout(address, "/ekonyv", 5_000);
+	const res = await getRequestTimeout(address, "/ekonyv", 15_000);
 	if (res.status != 200)
 		return null;
 
